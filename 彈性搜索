@@ -1,0 +1,19 @@
+從日期時間導入日期時間
+從彈性搜索導入彈性搜索
+將 matplotlib.pyplot 導入為 plt
+將熊貓導入為 pd
+導入請求
+進口時間
+
+es_ip = "http://127.0.0.1:9200/"
+es = Elasticsearch(es_ip)
+
+query_str = {"size": 0,"aggregations": {"result": {"terms": {"field": "winlog.computer_name.keyword","order": [{"_count": "desc"} ]}}}}
+res = es.search(index="winlogbeat", body=query_str)
+結果 = res["聚合"]["結果"]["桶"]
+
+computer_pd = pd.DataFrame(result, columns=["key", "doc_count"])
+computer_pd.plot(x="key", y="doc_count", kind="bar");
+plt.xlabel('計算機 ID')
+plt.ylabel('日誌計數')
+plt.title('計算機日誌')
